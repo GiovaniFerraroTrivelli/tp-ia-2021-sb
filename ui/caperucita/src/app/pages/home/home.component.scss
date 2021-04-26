@@ -1,0 +1,40 @@
+table {
+	margin: 0 auto;
+	text-align: center;
+	color: transparent;
+}
+
+td {
+    height: 48px;
+	width: 48px;
+	border: 1px solid #000;
+}
+
+td[data-entity="1"] {
+	background: green;
+}
+
+td[data-entity="2"] {
+	background: purple;
+}
+
+td[data-entity="3"] {
+	background: grey;
+}
+
+td[data-entity="4"] {
+	background: pink;
+}
+
+td[data-entity="5"] {
+	background: red;
+}
+
+.data-cell {
+	display: none;
+	color: #000;
+}
+
+td:hover .data-cell {
+	display: block;
+}

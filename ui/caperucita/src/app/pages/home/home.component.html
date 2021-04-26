@@ -1,0 +1,73 @@
+<div class="lg:flex">
+	<div class="fixed z-40 inset-0 flex-none h-full bg-black bg-opacity-25 w-full lg:bg-white lg:static lg:h-auto lg:overflow-y-visible lg:pt-0 lg:w-60 xl:w-72 lg:block hidden">
+		<div class="text-center my-2">
+			<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+				[class.opacity-50.cursor-not-allowed]="loading" (click)="start()">¡Comenzar!</button>
+		</div>
+
+		<div id="run-info" *ngIf="success">
+			<ul>
+				<li>Tiempo de resolución: {{ this.elapsedTime }} ms</li>
+				<li>Vidas iniciales: {{ modelRun.scenary?.cakesTotal }}</li>
+				<li>Posición inicial de Caperucita: [ {{ modelRun.scenary?.caperucitaPosition?.x }}, {{
+					modelRun.scenary?.caperucitaPosition?.y }} ]</li>
+				<li>Posición inicial del lobo: [ {{ modelRun.scenary?.wolfPosition?.x }}, {{
+					modelRun.scenary?.wolfPosition?.y }} ]</li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="min-w-0 w-full flex-auto lg:static lg:max-h-full lg:overflow-visible">
+		<div class="w-full flex">
+			<div class="min-w-0 flex-auto px-4 sm:px-6 xl:px-8 pt-10 pb-24 lg:pb-16">
+				<img *ngIf="!success" src='https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/62142078-a6c3-4fab-9f03-9ede1adbf7d1/d3csyza-5c1bf6ca-1310-4846-9768-27e71da58cb4.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvNjIxNDIwNzgtYTZjMy00ZmFiLTlmMDMtOWVkZTFhZGJmN2QxXC9kM2NzeXphLTVjMWJmNmNhLTEzMTAtNDg0Ni05NzY4LTI3ZTcxZGE1OGNiNC5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.6WYDVvdgIp0lUeY2R727fBlAziF27kf_iSdWENQIcjM' />
+
+				<ng-container *ngIf="success">
+					<div *ngIf="showScenary">
+						<table>
+							<tr *ngFor="let y of this.modelRun?.scenary?.inicialForest; let yp = index" [attr.data-row]="yp">
+								<td *ngFor="let x of y" [attr.data-entity]="x"><span>{{ x }}</span></td>
+							</tr>
+						</table>
+
+						<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+							(click)="showScenary = false">Mostrar iteraciones</button>
+					</div>
+
+					<div *ngIf="!showScenary">
+						<table>
+							<tr *ngFor="let y of getIterationKnownScenary(); let yp = index" [attr.data-row]="yp">
+								<td *ngFor="let x of y; let xp = index" [attr.data-entity]="x">
+									<span class="data-cell">({{xp}};{{yp}})</span>
+									<span>{{ x }}</span>
+								</td>
+							</tr>
+						</table>
+
+						<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+							(click)="showScenary = true">Mostrar escenario</button>
+
+						<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" (click)="setIteration(this.iteration - 1)">Iteración
+							anterior</button>
+						<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" (click)="setIteration(this.iteration + 1)">Iteración
+							siguiente</button>
+					</div>
+				</ng-container>
+			</div>
+
+			<div class="hidden xl:text-sm xl:block flex-none w-64 pl-8 mr-8">
+				<div *ngIf="success && !showScenary">
+					<ul>
+						<li>Acción: {{ this.getIterationData()?.action?.name }} (costo: {{ this.getIterationData()?.action?.cost }})</li>
+						<li>Vidas: {{ this.getIterationData()?.caperucitaState?.vidas }} de 3</li>
+						<li>Tortas: {{ this.getIterationData()?.caperucitaState?.tortas }} de {{ modelRun.scenary?.cakesTotal }}</li>
+						<li>Posición actual de Caperucita: [ {{ this.getIterationData()?.caperucitaState?.posicionActual?.x }}, {{
+							this.getIterationData()?.caperucitaState?.posicionActual?.y }} ]</li>
+						<li>Posición del lobo: [ {{ modelRun.scenary?.wolfPosition?.x }}, {{
+							modelRun.scenary?.wolfPosition?.y }} ]</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
