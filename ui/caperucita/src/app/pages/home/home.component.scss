@@ -5,9 +5,12 @@ table {
 }
 
 td {
-    height: 48px;
-	width: 48px;
+	height: 40px;
+	width: 40px;
+	display: inline-block;
 	border: 1px solid #000;
+	position: relative;
+	padding: 0;
 }
 
 td[data-entity="1"] {
@@ -33,8 +36,26 @@ td[data-entity="5"] {
 .data-cell {
 	display: none;
 	color: #000;
+    position: absolute;
+	width: 40px;
+	height: 40px;
+	left: 0;
+    top: 0;
 }
 
 td:hover .data-cell {
-	display: block;
+    display: block;
+}
+
+.button-row button:last-child {
+	margin-left: 10px;
+}
+
+.text-point {
+	font-family: monospace;
+}
+
+.waifu {
+	width: 500px;
+	margin: 0 auto;
 }
