@@ -1,17 +1,21 @@
 package ar.edu.utn.frsf.caperucita.scenary;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.awt.*;
 import java.util.ArrayList;
 
 import static ar.edu.utn.frsf.caperucita.constants.Constants.*;
 
 public abstract class Scenary {
+    @JsonIgnore
     protected int[][] forest;
     protected int[][] inicialForest;
     protected ArrayList<Point> flowersPosition;
     protected Point wolfPosition;
     protected Point caperucitaPosition;
     protected Integer cakesTotal;
+    @JsonIgnore
     protected ArrayList<Point> wolfSpawnPoints = new ArrayList<>();
 
     public void initializeScenary(int[][] forest) {

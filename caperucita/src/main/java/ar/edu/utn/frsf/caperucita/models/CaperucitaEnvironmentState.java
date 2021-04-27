@@ -1,23 +1,32 @@
 package ar.edu.utn.frsf.caperucita.models;
 
 import ar.edu.utn.frsf.caperucita.scenary.Scenary;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import frsf.cidisi.faia.state.EnvironmentState;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static ar.edu.utn.frsf.caperucita.constants.Constants.SCENARY_CAPERUCITA;
-import static ar.edu.utn.frsf.caperucita.constants.Constants.SCENARY_WOLF;
+import static ar.edu.utn.frsf.caperucita.constants.Constants.*;
 
 public class CaperucitaEnvironmentState extends EnvironmentState {
+    @JsonIgnore
     private int[][] initialForest;
     private int[][] currentForest;
     private Point wolfPosition;
+    @JsonIgnore
     private Point caperucitaPosition;
+    @JsonIgnore
     private ArrayList<Point> wolfSpawnPoints;
+    @JsonIgnore
     private Point wolfInitialPosition;
+    @JsonIgnore
     public boolean isCaperucitaDead;
+
+    public CaperucitaEnvironmentState() {
+        currentForest = new int[SCENARY_HEIGHT][SCENARY_WIDTH];
+    }
 
     public CaperucitaEnvironmentState(Scenary scenary) {
         currentForest = scenary.getForest();
@@ -28,8 +37,17 @@ public class CaperucitaEnvironmentState extends EnvironmentState {
         initialForest = scenary.getInicialForest();
     }
 
-    public int[][] getForest() {
-        return currentForest;
+    public CaperucitaEnvironmentState duplicate() {
+        CaperucitaEnvironmentState ces = new CaperucitaEnvironmentState();
+
+        int[][] forest = new int[SCENARY_HEIGHT][SCENARY_WIDTH];
+        for (int i = 0; i < SCENARY_HEIGHT; i++) {
+            forest[i] = this.currentForest[i].clone();
+        }
+        ces.setCurrentForest(forest);
+        ces.wolfPosition = new Point(this.wolfPosition.x, this.wolfPosition.y);
+
+        return ces;
     }
 
     public void setScenary(int[][] scenary) {
@@ -41,7 +59,9 @@ public class CaperucitaEnvironmentState extends EnvironmentState {
     }
 
     public void setWolfPosition(Point wolfPosition) {
+        this.currentForest[this.wolfPosition.y][this.wolfPosition.x] = 0;
         this.wolfPosition = wolfPosition;
+        this.currentForest[this.wolfPosition.y][this.wolfPosition.x] = SCENARY_WOLF;
     }
 
     public Point getCaperucitaPosition() {
@@ -59,7 +79,9 @@ public class CaperucitaEnvironmentState extends EnvironmentState {
     }
 
     public void setCurrentForest(int[][] currentForest) {
-        this.currentForest = currentForest;
+        for (int i = 0; i < SCENARY_HEIGHT; i++) {
+            this.currentForest[i] = currentForest[i].clone();
+        }
     }
 
     public void moveWolf() {
@@ -79,6 +101,7 @@ public class CaperucitaEnvironmentState extends EnvironmentState {
         this.wolfInitialPosition = wolfInitialPosition;
     }
 
+    @JsonIgnore
     public boolean isCaperucitaDead() {
         return isCaperucitaDead;
     }

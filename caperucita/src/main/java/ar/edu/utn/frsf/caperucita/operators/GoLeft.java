@@ -124,9 +124,9 @@ public class GoLeft extends SearchAction {
 
                     caperucitaState.setPosicionActual(caperucitaState.getPosicionInicial());
                     caperucitaState.setKnownScenary(caperucitaState.getInicialKnownScenary());
-                    caperucitaEnvironment.setScenary(caperucitaEnvironment.getInitialForest());
                     caperucitaEnvironment.setWolfPosition(caperucitaEnvironment.getWolfInitialPosition());
                     caperucitaEnvironment.setCaperucitaPosition(caperucitaState.getPosicionInicial());
+                    caperucitaEnvironment.setScenary(caperucitaEnvironment.getInitialForest());
 
                     sigueRecorriendo = false;
                 }

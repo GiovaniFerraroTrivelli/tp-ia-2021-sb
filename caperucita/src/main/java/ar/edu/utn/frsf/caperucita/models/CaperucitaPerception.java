@@ -23,7 +23,7 @@ public class CaperucitaPerception extends Perception {
     @Override
     public void initPerception(Agent agent, Environment environment) {
         CaperucitaEnvironment caperucitaEnvironment = (CaperucitaEnvironment) environment;
-        int[][] scenary = caperucitaEnvironment.getEnvironmentState().getForest();
+        int[][] scenary = caperucitaEnvironment.getEnvironmentState().getCurrentForest();
         this.filaActual = scenary[caperucitaEnvironment.getEnvironmentState().getCaperucitaPosition().y].clone();
 
         for (int i = 0; i < SCENARY_HEIGHT; i++) {

@@ -1,6 +1,7 @@
 package ar.edu.utn.frsf.caperucita.models;
 
 import ar.edu.utn.frsf.caperucita.scenary.Scenary;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import frsf.cidisi.faia.agent.Perception;
 import frsf.cidisi.faia.agent.search.SearchBasedAgentState;
 
@@ -13,20 +14,19 @@ public class CaperucitaState extends SearchBasedAgentState {
     private Point posicionActual;
     private Integer vidas;
     private Integer tortas;
+    @JsonIgnore
     private ArrayList<Point> flowersPositions;
-
     private int[][] knownScenary;
+    @JsonIgnore
     private int[][] inicialKnownScenary;
-
+    @JsonIgnore
     private Point POSICION_INICIAL;
-    private Scenary scenary;
 
     public CaperucitaState() {
         this.knownScenary = new int[SCENARY_HEIGHT][SCENARY_WIDTH];
     }
 
     public CaperucitaState(Scenary scenary) {
-        this.scenary = scenary;
 
         this.flowersPositions = scenary.getFlowersPosition();
         this.posicionActual = scenary.getCaperucitaPosition();
@@ -179,6 +179,7 @@ public class CaperucitaState extends SearchBasedAgentState {
         this.setVidas(this.vidas - 1);
     }
 
+    @JsonIgnore
     public Point getPosicionInicial() {
         return POSICION_INICIAL;
     }
@@ -241,10 +242,12 @@ public class CaperucitaState extends SearchBasedAgentState {
         }
     }
 
+    @JsonIgnore
     public int[] getRow() {
         return this.knownScenary[this.posicionActual.y];
     }
 
+    @JsonIgnore
     public int[] getColumn() {
         int[] column = new int[SCENARY_HEIGHT];
         for (int i = 0; i < SCENARY_HEIGHT; i++) {

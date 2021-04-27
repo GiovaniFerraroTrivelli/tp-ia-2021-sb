@@ -1,5 +1,6 @@
 package ar.edu.utn.frsf.caperucita.general;
 
+import ar.edu.utn.frsf.caperucita.models.CaperucitaEnvironmentState;
 import ar.edu.utn.frsf.caperucita.scenary.Scenary;
 
 import java.util.ArrayList;
@@ -7,9 +8,11 @@ import java.util.ArrayList;
 public class ModelRun {
     private Scenary scenary;
     private ArrayList<CaperucitaIteration> caperucitaIterations;
+    private ArrayList<CaperucitaEnvironmentState> environmentIterations;
 
     public ModelRun() {
         this.caperucitaIterations = new ArrayList<>();
+        this.environmentIterations = new ArrayList<>();
     }
 
     public Scenary getScenary() {
@@ -28,7 +31,19 @@ public class ModelRun {
         this.caperucitaIterations = caperucitaIterations;
     }
 
-    public void addIteration(CaperucitaIteration caperucitaIteration) {
+    public ArrayList<CaperucitaEnvironmentState> getEnvironmentIterations() {
+        return environmentIterations;
+    }
+
+    public void setEnvironmentIterations(ArrayList<CaperucitaEnvironmentState> environmentIterations) {
+        this.environmentIterations = environmentIterations;
+    }
+
+    public void addCaperucitaIteration(CaperucitaIteration caperucitaIteration) {
         this.caperucitaIterations.add(caperucitaIteration);
+    }
+
+    public void addScenaryIteration(CaperucitaEnvironmentState caperucitaEnvironmentState) {
+        this.environmentIterations.add(caperucitaEnvironmentState);
     }
 }

@@ -12,18 +12,18 @@ import frsf.cidisi.faia.agent.Perception;
 import frsf.cidisi.faia.agent.search.Problem;
 import frsf.cidisi.faia.agent.search.SearchAction;
 import frsf.cidisi.faia.agent.search.SearchBasedAgent;
-import frsf.cidisi.faia.solver.search.AStarSearch;
-import frsf.cidisi.faia.solver.search.BreathFirstSearch;
-import frsf.cidisi.faia.solver.search.Search;
-import frsf.cidisi.faia.solver.search.UniformCostSearch;
+import frsf.cidisi.faia.solver.search.*;
 
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Caperucita extends SearchBasedAgent {
+    private final Integer strategy;
 
-    public Caperucita(Scenary scenary) {
+    public Caperucita(Scenary scenary, Integer strategy) {
+        this.strategy = strategy;
+
         CaperucitaGoal caperucitaGoal = new CaperucitaGoal();
 
         CaperucitaState caperucitaState = new CaperucitaState(scenary);
@@ -47,12 +47,33 @@ public class Caperucita extends SearchBasedAgent {
 
     @Override
     public Action selectAction() {
+
         //BreathFirstSearch strategy = new BreathFirstSearch();
-        AStarSearch strategy = new AStarSearch(new CostFunction(), new Heuristic());
+        // AStarSearch strategy = new AStarSearch(new CostFunction(), new Heuristic());
         //UniformCostSearch strategy = new UniformCostSearch(new CostFunction());
 
-        // Create a Search object with the strategy
-        Search searchSolver = new Search(strategy);
+        Search searchSolver = null;
+
+        switch(this.strategy) {
+            case 0 -> {
+                BreathFirstSearch str = new BreathFirstSearch();
+
+                // Create a Search object with the strategy
+                searchSolver = new Search(str);
+            }
+            case 1 -> {
+                AStarSearch str = new AStarSearch(new CostFunction(), new Heuristic());
+
+                // Create a Search object with the strategy
+                searchSolver = new Search(str);
+            }
+            default -> {
+                UniformCostSearch str = new UniformCostSearch(new CostFunction());
+
+                // Create a Search object with the strategy
+                searchSolver = new Search(str);
+            }
+        }
 
         /* Generate an XML file with the search tree. It can also be generated
          * in other formats like PDF with PDF_TREE */
