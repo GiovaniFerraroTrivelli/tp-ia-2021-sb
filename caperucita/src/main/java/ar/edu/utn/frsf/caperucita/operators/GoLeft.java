@@ -21,7 +21,7 @@ public class GoLeft extends SearchAction {
         Point posicionActual = caperucitaState.getPosicionActual();
         int[] filaActual = caperucitaState.getRow();
 
-        if (filaActual[posicionActual.x - 1] == SCENARY_TREE)
+        if (posicionActual.x == 0 || filaActual[posicionActual.x - 1] == SCENARY_TREE)
             return null;
 
         int[] newRow = new int[SCENARY_WIDTH];
@@ -66,7 +66,7 @@ public class GoLeft extends SearchAction {
         }
 
         if(sigueRecorriendo) {
-            caperucitaState.setPosicionActual(new Point(1, posicionActual.y));
+            caperucitaState.setPosicionActual(new Point(0, posicionActual.y));
         }
 
         this.cost = MOVEMENT_COST * distanciaRecorrida - cantTortas * MOVEMENT_CAKE_COST + lobo * MOVEMENT_WOLF_COST;

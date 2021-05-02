@@ -2,6 +2,7 @@ package ar.edu.utn.frsf.caperucita.general;
 
 import ar.edu.utn.frsf.caperucita.models.Caperucita;
 import ar.edu.utn.frsf.caperucita.models.CaperucitaEnvironmentState;
+import ar.edu.utn.frsf.caperucita.models.CaperucitaGoal;
 import ar.edu.utn.frsf.caperucita.models.CaperucitaState;
 import frsf.cidisi.faia.agent.Action;
 import frsf.cidisi.faia.agent.Agent;
@@ -18,6 +19,20 @@ public class SearchBasedAgentSimulatorEx extends SearchBasedAgentSimulator {
     public SearchBasedAgentSimulatorEx(Environment environment, Agent agent, ModelRun modelRun) {
         super(environment, agent);
         this.modelRun = modelRun;
+    }
+
+    @Override
+    public void start(){
+        super.start();
+        Caperucita caperucita = (Caperucita) this.getAgents().firstElement();
+
+        CaperucitaState caperucitaState = (CaperucitaState) ((CaperucitaState)caperucita.getAgentState()).clone();
+        CaperucitaEnvironmentState caperucitaEnvironmentState = ((CaperucitaEnvironmentState)this.environment.getEnvironmentState()).duplicate();
+        if((new CaperucitaGoal()).isGoalState(caperucitaState)) {
+            modelRun.setSuccess(true);
+            modelRun.addScenaryIteration(caperucitaEnvironmentState);
+            modelRun.addCaperucitaIteration(new CaperucitaIteration(caperucitaState, null));
+        }
     }
 
     @Override

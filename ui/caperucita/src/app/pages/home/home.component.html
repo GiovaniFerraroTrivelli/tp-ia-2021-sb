@@ -3,11 +3,11 @@
 		class="fixed z-40 inset-0 flex-none h-full bg-black bg-opacity-25 w-full lg:bg-white lg:static lg:h-auto lg:overflow-y-visible lg:pt-0 lg:w-60 xl:w-72 lg:block hidden">
 		<div class="px-6 pt-6 overflow-y-auto text-base lg:text-sm lg:py-12 lg:pl-6 lg:pr-8 sticky?lg:h-(screen-16)">
 			<div class="my-2">
-				<h5 class="text-gray-900 uppercase tracking-wide font-semibold mb-3 text-sm lg:text-xs">
-					Seleccionar estrategia
-				</h5>
-
 				<form [formGroup]="startRun" (submit)="onSubmit()" class="text-center">
+					<h5 class="text-gray-900 uppercase tracking-wide font-semibold mb-3 text-sm lg:text-xs">
+						Seleccionar estrategia
+					</h5>
+
 					<div class="relative inline-block w-full text-gray-700 mb-3">
 						<select
 							class="w-full h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-lg appearance-none focus:shadow-outline"
@@ -15,6 +15,26 @@
 							<option value="0">Breath First (Primero en amplitud)</option>
 							<option value="1">A Star (A Estrella)</option>
 							<option value="2">Uniform cost (Costo uniforme)</option>
+						</select>
+					
+						<div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+							<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+								<path
+									d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+									clip-rule="evenodd" fill-rule="evenodd"></path>
+							</svg>
+						</div>
+					</div>
+
+					<h5 class="text-gray-900 uppercase tracking-wide font-semibold mb-3 text-sm lg:text-xs">
+						Seleccionar escenario
+					</h5>
+
+					<div class="relative inline-block w-full text-gray-700 mb-3">
+						<select
+							class="w-full mt-1 h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-lg appearance-none focus:shadow-outline"
+							placeholder="Escenario" formControlName="scenary">
+							<option *ngFor="let i of [1, 2, 3, 4, 5]" [value]="i">Escenario #{{ i }}</option>
 						</select>
 						<div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
 							<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
@@ -25,8 +45,10 @@
 						</div>
 					</div>
 
-					<button [disabled]="!startRun.valid" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-						[class.opacity-50.cursor-not-allowed]="loading || !startRun.valid" type="submit">¡Comenzar!</button>
+					<button [disabled]="!startRun.valid"
+						class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+						[class.opacity-50.cursor-not-allowed]="loading || !startRun.valid"
+						type="submit">¡Comenzar!</button>
 				</form>
 			</div>
 
@@ -56,6 +78,10 @@
 								{{ position?.y }} ]</li>
 						</ul>
 					</li>
+					<li class="mt-5 text-center text-xl">
+						<strong *ngIf="modelRun.success" class="text-green-400">¡META ALCANZADA!</strong>
+						<strong *ngIf="!modelRun.success" class="text-red-400">¡META NO ALCANZADA!</strong>
+					</li>
 				</ul>
 			</div>
 		</div>
@@ -63,7 +89,7 @@
 
 	<div class="min-w-0 w-full flex-auto lg:static lg:max-h-full lg:overflow-visible">
 		<div class="w-full flex">
-			<div class="min-w-0 flex-auto px-4 sm:px-6 xl:px-8 pt-10 pb-24 lg:pb-16">
+			<div class="min-w-0 flex-auto pt-10 pb-24 lg:pb-16">
 				<img class="waifu" title="waifu y lowito" *ngIf="!success"
 					src='https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/62142078-a6c3-4fab-9f03-9ede1adbf7d1/d3csyza-5c1bf6ca-1310-4846-9768-27e71da58cb4.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvNjIxNDIwNzgtYTZjMy00ZmFiLTlmMDMtOWVkZTFhZGJmN2QxXC9kM2NzeXphLTVjMWJmNmNhLTEzMTAtNDg0Ni05NzY4LTI3ZTcxZGE1OGNiNC5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.6WYDVvdgIp0lUeY2R727fBlAziF27kf_iSdWENQIcjM' />
 
@@ -74,7 +100,8 @@
 								[attr.data-row]="yp">
 								<td *ngFor="let x of y; let xp = index" [class.pasto]="x == 0" [class.flores]="x == 4">
 									<span class="data-cell">({{xp}};{{yp}})</span>
-									<span aria-label="Caperucita" class="sprite caperucita" [class]="this.getCaperucitaIterationData()?.action?.name" *ngIf="x == 5"></span>
+									<span aria-label="Caperucita" class="sprite caperucita"
+										[class]="this.getCaperucitaIterationData()?.action?.name" *ngIf="x == 5"></span>
 									<span aria-label="Lobo" class="sprite lobo" *ngIf="x == 3"></span>
 									<span aria-label="Torta" class="sprite torta" *ngIf="x == 2"></span>
 									<span aria-label="Árbol" class="sprite arbol" *ngIf="x == 1"></span>
@@ -89,7 +116,8 @@
 							<tr *ngFor="let y of getIterationKnownScenary(); let yp = index" [attr.data-row]="yp">
 								<td *ngFor="let x of y; let xp = index" [class.pasto]="x == 0" [class.flores]="x == 4">
 									<span class="data-cell">({{xp}};{{yp}})</span>
-									<span aria-label="Caperucita" class="sprite caperucita" [class]="this.getCaperucitaIterationData()?.action?.name" *ngIf="x == 5"></span>
+									<span aria-label="Caperucita" class="sprite caperucita"
+										[class]="this.getCaperucitaIterationData()?.action?.name" *ngIf="x == 5"></span>
 									<span aria-label="Lobo" class="sprite lobo" *ngIf="x == 3"></span>
 									<span aria-label="Torta" class="sprite torta" *ngIf="x == 2"></span>
 									<span aria-label="Árbol" class="sprite arbol" *ngIf="x == 1"></span>
@@ -102,7 +130,8 @@
 							<tr *ngFor="let y of getIterationScenary(); let yp = index" [attr.data-row]="yp">
 								<td *ngFor="let x of y; let xp = index" [class.pasto]="x == 0" [class.flores]="x == 4">
 									<span class="data-cell">({{xp}};{{yp}})</span>
-									<span aria-label="Caperucita" class="sprite caperucita" [class]="this.getCaperucitaIterationData()?.action?.name" *ngIf="x == 5"></span>
+									<span aria-label="Caperucita" class="sprite caperucita"
+										[class]="this.getCaperucitaIterationData()?.action?.name" *ngIf="x == 5"></span>
 									<span aria-label="Lobo" class="sprite lobo" *ngIf="x == 3"></span>
 									<span aria-label="Torta" class="sprite torta" *ngIf="x == 2"></span>
 									<span aria-label="Árbol" class="sprite arbol" *ngIf="x == 1"></span>
@@ -113,11 +142,13 @@
 
 						<div class="button-row text-center my-3">
 							<div class="toggle-buttons mb-3">
-								<button *ngIf="caperucitaView" (click)="caperucitaView = false" class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+								<button *ngIf="caperucitaView" (click)="caperucitaView = false"
+									class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
 									Vista general
 								</button>
 
-								<button *ngIf="!caperucitaView" (click)="caperucitaView = true" class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+								<button *ngIf="!caperucitaView" (click)="caperucitaView = true"
+									class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
 									Vista de Caperucita
 								</button>
 							</div>
@@ -129,7 +160,7 @@
 									Interación anterior
 								</button>
 								<button (click)="setIteration(this.iteration + 1)"
-									[class.opacity-50.cursor-not-allowed]="this.iteration - 1 == this.modelRun?.caperucitaIterations?.length"
+									[class.opacity-50.cursor-not-allowed]="this.iteration == getIterationCount()"
 									class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r">
 									Iteración siguiente
 								</button>
@@ -154,19 +185,35 @@
 
 						<div *ngIf="success && !showScenary" class="mt-8">
 							<h5 class="text-gray-900 uppercase tracking-wide font-semibold mb-3 text-sm lg:text-xs">
-								Iteración {{ this.iteration }} de {{ this.modelRun?.caperucitaIterations?.length }}
+								Iteración {{ this.iteration }} de {{ getIterationCount() }}
 							</h5>
 							<ul>
-								<li>Acción: {{ this.getCaperucitaIterationData()?.action?.name }} (costo: {{
-									this.getCaperucitaIterationData()?.action?.cost }})</li>
-								<li>Vidas: {{ this.getCaperucitaIterationData()?.caperucitaState?.vidas }} de 3</li>
-								<li>Tortas: {{ this.getCaperucitaIterationData()?.caperucitaState?.tortas }} de {{
-									modelRun.scenary?.cakesTotal }}</li>
+								<li class="text-center" *ngIf="this.getCaperucitaIterationData()?.action">
+									<span class="sprite accion ml-auto mr-auto"
+										[class]="this.getCaperucitaIterationData()?.action?.name"></span>
+
+									<em>{{ this.getCaperucitaIterationData()?.action?.name }}</em><br />
+									Costo: {{ this.getCaperucitaIterationData()?.action?.cost }}
+								</li>
+								<li class="text-center mt-2" aria-label="Vidas">
+									<span *ngFor="let vida of [].constructor(3); let i = index"
+										class="sprite vida ml-0.5 mr-0.5"
+										[ngClass]="i < this.getCaperucitaIterationData()?.caperucitaState?.vidas! ? 'on' : 'off'"></span>
+								</li>
+								<li class="text-center mt-2" aria-label="Tortas">
+									<span
+										*ngFor="let vida of [].constructor(modelRun.scenary?.cakesTotal); let i = index"
+										class="sprite torta inline-block ml-1 mr-1"
+										[class.off]="i > this.getCaperucitaIterationData()?.caperucitaState?.tortas! - 1"></span>
+								</li>
 								<li>Posición actual de Caperucita:
 									<ul class="ml-5 text-point">
-										<li>[ x = {{ this.getCaperucitaIterationData()?.caperucitaState?.posicionActual?.x }}, y =
+										<li>[ x = {{
+											this.getCaperucitaIterationData()?.caperucitaState?.posicionActual?.x }}, y
+											=
 											{{
-											this.getCaperucitaIterationData()?.caperucitaState?.posicionActual?.y }} ]</li>
+											this.getCaperucitaIterationData()?.caperucitaState?.posicionActual?.y }} ]
+										</li>
 									</ul>
 								</li>
 								<li>Posición del lobo:

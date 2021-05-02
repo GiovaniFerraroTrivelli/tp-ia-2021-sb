@@ -9,10 +9,12 @@ public class ModelRun {
     private Scenary scenary;
     private ArrayList<CaperucitaIteration> caperucitaIterations;
     private ArrayList<CaperucitaEnvironmentState> environmentIterations;
+    private Boolean success;
 
     public ModelRun() {
         this.caperucitaIterations = new ArrayList<>();
         this.environmentIterations = new ArrayList<>();
+        this.success = false;
     }
 
     public Scenary getScenary() {
@@ -45,5 +47,13 @@ public class ModelRun {
 
     public void addScenaryIteration(CaperucitaEnvironmentState caperucitaEnvironmentState) {
         this.environmentIterations.add(caperucitaEnvironmentState);
+    }
+
+    public Boolean getSuccess() {
+        return success;
+    }
+
+    public void setSuccess(Boolean success) {
+        this.success = success;
     }
 }

@@ -6,15 +6,17 @@ import { Injectable } from '@angular/core';
 })
 export class ApiService {
 
+	HOST: string = 'http://localhost';
+
 	constructor(
 		private http: HttpClient
 	) { }
 
 	get(endpoint: string, val: any) {
-		return this.http.get<typeof val>('http://caperucita.shiobi.me:8080/api/v1/' + endpoint);
+		return this.http.get<typeof val>(`${this.HOST}:8080/api/v1/${endpoint}`);
 	}
 
 	post(endpoint: string, val: any, data: any) {
-		return this.http.post<typeof val>('http://caperucita.shiobi.me:8080/api/v1/' + endpoint, data);
+		return this.http.post<typeof val>(`${this.HOST}:8080/api/v1/${endpoint}`, data);
 	}
 }

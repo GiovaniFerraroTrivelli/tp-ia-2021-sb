@@ -6,4 +6,5 @@ export interface ModelRun {
 	scenary: Scenary | null;
 	caperucitaIterations: CaperucitaIteration[] | null;
 	environmentIterations: EnvironmentIteration[] | null;
+	success: boolean;
 }

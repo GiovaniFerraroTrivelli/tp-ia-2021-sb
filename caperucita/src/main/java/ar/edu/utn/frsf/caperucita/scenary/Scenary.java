@@ -17,11 +17,15 @@ public abstract class Scenary {
     protected Integer cakesTotal;
     @JsonIgnore
     protected ArrayList<Point> wolfSpawnPoints = new ArrayList<>();
+    protected Integer width;
+    protected Integer height;
 
     public void initializeScenary(int[][] forest) {
+        this.height = this.forest.length;
+        this.width = this.forest[0].length;
 
-        for (int i = 0; i < SCENARY_HEIGHT; i++) {
-            for (int j = 0; j < SCENARY_WIDTH; j++) {
+        for (int i = 0; i < this.height; i++) {
+            for (int j = 0; j < this.width; j++) {
                 switch (forest[i][j]) {
                     case SCENARY_CAKE -> this.cakesTotal++;
                     case SCENARY_FLOWER -> flowersPosition.add(new Point(j, i));
@@ -39,8 +43,8 @@ public abstract class Scenary {
             }
         }
 
-        this.inicialForest = new int[SCENARY_HEIGHT][SCENARY_WIDTH];
-        for (int i = 0; i < SCENARY_HEIGHT; i++) {
+        this.inicialForest = new int[this.height][this.width];
+        for (int i = 0; i < this.height; i++) {
             this.inicialForest[i] = this.forest[i].clone();
         }
     }

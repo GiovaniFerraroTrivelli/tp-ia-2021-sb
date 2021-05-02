@@ -50,8 +50,10 @@ public class CaperucitaEnvironmentState extends EnvironmentState {
         return ces;
     }
 
-    public void setScenary(int[][] scenary) {
-        this.currentForest = scenary;
+    public void setScenary(int[][] scenary){
+        for (int i = 0; i < scenary.length; i++) {
+            this.currentForest[i] = scenary[i].clone();
+        }
     }
 
     public Point getWolfPosition() {

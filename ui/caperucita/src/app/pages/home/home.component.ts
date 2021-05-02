@@ -22,13 +22,14 @@ export class HomeComponent implements OnInit {
 		private apiService: ApiService
 	) {
 		this.success = false;
-		this.modelRun = { scenary: null, caperucitaIterations: [], environmentIterations: [] };
+		this.modelRun = { scenary: null, caperucitaIterations: [], environmentIterations: [], success: false };
 		this.elapsedTime = 0;
 		this.loading = false;
 		this.showScenary = false;
 		this.iteration = 0;
 		this.startRun = new FormGroup({
 			strategy: new FormControl(null, Validators.required),
+			scenary: new FormControl(null, Validators.required)
 		});
 		this.caperucitaView = false;
 	}
@@ -57,6 +58,9 @@ export class HomeComponent implements OnInit {
 	}
 
 	setIteration(i: number) {
+		if(i < 0 || i >= this.modelRun?.caperucitaIterations?.length!)
+			return;
+
 		this.iteration = i;
 	}
 
@@ -79,5 +83,9 @@ export class HomeComponent implements OnInit {
 	isCaperucitaPosition(x: number, y: number) {
 		return this.getCaperucitaIterationData()?.caperucitaState?.posicionActual?.x == x
 			&& this.getCaperucitaIterationData()?.caperucitaState?.posicionActual?.y == y;
+	}
+
+	getIterationCount() {
+		return this.modelRun?.caperucitaIterations?.length! - 1;
 	}
 }

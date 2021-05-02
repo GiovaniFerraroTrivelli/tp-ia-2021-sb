@@ -22,7 +22,7 @@ public class GoDown extends SearchAction {
 
         int[] columnaActual = caperucitaState.getColumn();
 
-        if (columnaActual[posicionActual.y + 1] == SCENARY_TREE)
+        if (posicionActual.y == SCENARY_HEIGHT - 1 || columnaActual[posicionActual.y + 1] == SCENARY_TREE)
             return null;
 
         int[] newColumn = new int[SCENARY_HEIGHT];
@@ -67,7 +67,7 @@ public class GoDown extends SearchAction {
         }
 
         if(sigueRecorriendo) {
-            caperucitaState.setPosicionActual(new Point(posicionActual.x, SCENARY_HEIGHT - 2));
+            caperucitaState.setPosicionActual(new Point(posicionActual.x, SCENARY_HEIGHT - 1));
         }
 
         this.cost = MOVEMENT_COST * distanciaRecorrida - cantTortas * MOVEMENT_CAKE_COST + lobo * MOVEMENT_WOLF_COST;
